@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node -e ' *)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" \"http://localhost:3000/get-involved\")",
+      "Bash(node -e \"const N=require\\('naija-state-local-government'\\); console.log\\('states:', N.states\\(\\).length\\); console.log\\('Kano LGAs:', N.lgas\\('Kano'\\).lgas.length\\); console.log\\('FCT name present:', N.states\\(\\).find\\(s=>/abuja|federal|fct/i.test\\(s\\)\\) || 'none'\\);\")",
+      "Bash(node -e \"const p=require\\('./package.json'\\); console.log\\(JSON.stringify\\({...p.dependencies}, null, 0\\)\\)\")",
+      "Bash(node -e \"try{require.resolve\\('@supabase/supabase-js'\\);console.log\\('supabase-js OK'\\)}catch{console.log\\('supabase-js MISSING'\\)}\")",
+      "Bash(node -e \"try{require.resolve\\('@supabase/ssr'\\);console.log\\('ssr OK'\\)}catch{console.log\\('ssr MISSING'\\)}\")",
+      "Bash(node -e \"try{require.resolve\\('zod'\\);console.log\\('zod OK'\\)}catch{console.log\\('zod MISSING'\\)}\")",
+      "Bash(node -e \"try{require.resolve\\('server-only'\\);console.log\\('server-only OK'\\)}catch{console.log\\('server-only MISSING'\\)}\")",
+      "Bash(curl -s -X POST http://localhost:3000/api/members -H 'Content-Type: application/json' -d '{\"firstName\":\"Test\",\"lastName\":\"User\",\"email\":\"test@example.com\",\"phone\":\"08000000000\",\"state\":\"Lagos\",\"lga\":\"Ikeja\",\"ward\":\"Test Ward\",\"interests\":[\"Digital Skills\"],\"vision\":\"Backend wiring test\"}' -w '\\\\nHTTP %{http_code}\\\\n')",
+      "Bash(curl -s -X POST http://localhost:3000/api/members -H 'Content-Type: application/json' -d '{\"firstName\":\"Ada\",\"lastName\":\"Okoro\",\"email\":\"ada.test@example.com\",\"phone\":\"08031234567\",\"state\":\"Enugu\",\"lga\":\"Nsukka\",\"ward\":\"University Ward\",\"interests\":[\"Rural Education\",\"Digital Skills\"],\"vision\":\"End-to-end backend test\"}' -w '\\\\nHTTP %{http_code}\\\\n')",
+      "Bash(curl -s -X POST http://localhost:3000/api/contact -H 'Content-Type: application/json' -d '{\"name\":\"Ada Okoro\",\"email\":\"ada.test@example.com\",\"message\":\"Testing the contact pipeline.\"}' -w '\\\\nHTTP %{http_code}\\\\n')",
+      "Bash(node --env-file=.env.local -e ' *)"
+    ]
+  }
+}

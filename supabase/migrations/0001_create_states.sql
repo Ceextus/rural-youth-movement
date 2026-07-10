@@ -1,0 +1,1 @@
+-- Migration: create states reference table

@@ -1,0 +1,4 @@
+/**
+ * @typedef {Object} Chapter
+ */
+export {};

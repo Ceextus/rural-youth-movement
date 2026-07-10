@@ -1,0 +1,4 @@
+/**
+ * @typedef {Object} AgendaPillar
+ */
+export {};

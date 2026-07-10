@@ -1,0 +1,1 @@
+-- Migration: create news_posts table

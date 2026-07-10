@@ -1,0 +1,1 @@
+-- Migration: create agenda_pillars table

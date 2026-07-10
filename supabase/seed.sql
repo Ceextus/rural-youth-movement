@@ -1,0 +1,1 @@
+-- Seed data (states, lgas, agenda_pillars, etc.)

@@ -1,0 +1,4 @@
+/**
+ * @typedef {Object} Member
+ */
+export {};
