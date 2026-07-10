@@ -29,7 +29,7 @@ export default function Navbar() {
       gsap.set(logoRef.current, { opacity: 0, x: -20 });
       gsap.set(linksRef.current, { opacity: 0, y: -10 });
       gsap.set(buttonRef.current, { opacity: 0, scale: 0.9 });
-      gsap.set(mobileNavRef.current, { opacity: 0, scale: 0.9 });
+      gsap.set(mobileNavRef.current, { opacity: 0 });
 
       // Animations
       tl.to(logoRef.current, {
@@ -50,7 +50,7 @@ export default function Navbar() {
         "-=0.4"
       )
       .to(
-        [buttonRef.current, mobileNavRef.current],
+        buttonRef.current,
         {
           opacity: 1,
           scale: 1,
@@ -58,6 +58,15 @@ export default function Navbar() {
           ease: "back.out(1.7)",
         },
         "-=0.4"
+      )
+      .to(
+        mobileNavRef.current,
+        {
+          opacity: 1,
+          duration: 0.5,
+          ease: "power2.out",
+        },
+        "<"
       );
     }, navRef);
 
