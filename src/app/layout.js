@@ -23,9 +23,53 @@ const montserrat = Montserrat({
 });
 
 export const metadata = {
-  title: "Rural Youth Movement (RYM)",
+  title: {
+    default: "Rural Youth Movement (RYM)",
+    template: "%s | RYM",
+  },
   description:
     "Mobilising the grassroots for rural development and civic participation across Nigeria's 36 states.",
+  keywords: [
+    "Rural Youth Movement",
+    "RYM",
+    "Nigeria",
+    "rural development",
+    "youth empowerment",
+    "civic participation",
+    "grassroots",
+    "community development",
+  ],
+  authors: [{ name: "Rural Youth Movement" }],
+  creator: "Rural Youth Movement",
+  metadataBase: new URL("https://rym.ng"),
+  openGraph: {
+    title: "Rural Youth Movement (RYM)",
+    description:
+      "Mobilising the grassroots for rural development and civic participation across Nigeria's 36 states.",
+    url: "https://rym.ng",
+    siteName: "Rural Youth Movement",
+    locale: "en_NG",
+    type: "website",
+    images: [
+      {
+        url: "/images/brand/rym-logo.png",
+        width: 512,
+        height: 512,
+        alt: "Rural Youth Movement Logo",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary",
+    title: "Rural Youth Movement (RYM)",
+    description:
+      "Mobilising the grassroots for rural development and civic participation across Nigeria's 36 states.",
+    images: ["/images/brand/rym-logo.png"],
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export default function RootLayout({ children }) {
