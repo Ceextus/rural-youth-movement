@@ -4,6 +4,8 @@ import "./globals.css";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import SplashScreen from "@/components/layout/SplashScreen";
+import PublicOnly from "@/components/layout/PublicOnly";
+import { getSettings } from "@/lib/queries/settings";
 
 const clashDisplay = localFont({
   variable: "--font-clash-display",
@@ -52,7 +54,7 @@ export const metadata = {
     type: "website",
     images: [
       {
-        url: "/images/brand/rym-logo.png",
+        url: "/logo.png",
         width: 512,
         height: 512,
         alt: "Rural Youth Movement Logo",
@@ -64,7 +66,7 @@ export const metadata = {
     title: "Rural Youth Movement (RYM)",
     description:
       "Mobilising the grassroots for rural development and civic participation across Nigeria's 36 states.",
-    images: ["/images/brand/rym-logo.png"],
+    images: ["/logo.png"],
   },
   robots: {
     index: true,
@@ -72,7 +74,8 @@ export const metadata = {
   },
 };
 
-export default function RootLayout({ children }) {
+export default async function RootLayout({ children }) {
+  const settings = await getSettings();
   return (
     <html
       lang="en"
@@ -85,10 +88,24 @@ export default function RootLayout({ children }) {
         />
       </head>
       <body className="bg-background text-on-background font-body-md min-h-full flex flex-col overflow-x-hidden relative">
-        <SplashScreen />
-        <Navbar />
+        <PublicOnly>
+          <SplashScreen />
+          <Navbar
+            logoUrl={settings.logo_url}
+            siteName={settings.site_name}
+            navLinks={settings.nav_links}
+          />
+        </PublicOnly>
         <main className="flex-1">{children}</main>
-        <Footer />
+        <PublicOnly>
+          <Footer
+            logoUrl={settings.logo_url}
+            siteName={settings.site_name}
+            tagline={settings.tagline}
+            columns={settings.footer_columns}
+            socials={settings.socials}
+          />
+        </PublicOnly>
       </body>
     </html>
   );

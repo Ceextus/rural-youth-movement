@@ -22,6 +22,13 @@ export async function POST(request) {
 
   try {
     const supabase = getSupabaseAdmin();
+    
+    // Generate member_code
+    const stateCode = d.state ? d.state.slice(0, 3).toUpperCase() : 'NAT';
+    const year = new Date().getFullYear();
+    const randomHex = Math.floor(Math.random() * 0xfffff).toString(16).toUpperCase().padStart(5, '0');
+    const memberCode = `RYM-${stateCode}-${year}-${randomHex}`;
+
     const { data, error } = await supabase
       .from("members")
       .insert({
@@ -34,8 +41,10 @@ export async function POST(request) {
         ward: d.ward,
         interests: d.interests,
         vision: d.vision || null,
+        photo_url: d.photoUrl || null,
+        member_code: memberCode,
       })
-      .select("id, status, state")
+      .select("id, status, state, member_code, photo_url")
       .single();
 
     if (error) throw error;

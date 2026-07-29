@@ -7,7 +7,16 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
-export default function CtaBanner() {
+const CTA_DEFAULTS = {
+  heading: "Ready to shape the future of your community?",
+  subtext:
+    "Join thousands of young leaders driving real change across all 36 states.",
+  buttonLabel: "Become a Member Today",
+  buttonHref: "/get-involved",
+};
+
+export default function CtaBanner({ content }) {
+  const c = { ...CTA_DEFAULTS, ...(content || {}) };
   const sectionRef = useRef(null);
   const contentRef = useRef([]);
   const patternRef = useRef(null);
@@ -64,14 +73,13 @@ export default function CtaBanner() {
             ref={(el) => (contentRef.current[0] = el)}
             className="font-headline-lg text-headline-lg-mobile md:text-headline-lg mb-4"
           >
-            Ready to shape the future of your community?
+            {c.heading}
           </h2>
           <p
             ref={(el) => (contentRef.current[1] = el)}
             className="font-body-lg text-body-lg text-primary-fixed/90"
           >
-            Join thousands of young leaders driving real change across all 36
-            states.
+            {c.subtext}
           </p>
         </div>
         <div
@@ -79,10 +87,10 @@ export default function CtaBanner() {
           className="shrink-0"
         >
           <Link
-            href="/get-involved"
+            href={c.buttonHref}
             className="group/btn relative overflow-hidden inline-flex items-center gap-3 bg-surface-white text-primary font-display-lg text-label-lg px-8 py-4 rounded hover:-translate-y-1 shadow-[0px_8px_20px_rgba(0,0,0,0.15)] hover:shadow-[0px_12px_24px_rgba(0,0,0,0.2)] transition-all duration-300"
           >
-            <span className="relative z-10">Become a Member Today</span>
+            <span className="relative z-10">{c.buttonLabel}</span>
             
             {/* Sliding arrow */}
             <span className="relative overflow-hidden w-5 h-5 flex items-center justify-center z-10">

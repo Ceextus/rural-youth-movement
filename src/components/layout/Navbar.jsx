@@ -10,11 +10,13 @@ export const NAV_LINKS = [
   { label: "Home", href: "/" },
   { label: "About", href: "/about" },
   { label: "Our Agenda", href: "/agenda" },
+  { label: "Chapters", href: "/chapters" },
   { label: "News", href: "/news" },
   { label: "Contact", href: "/contact" },
 ];
 
-export default function Navbar() {
+export default function Navbar({ logoUrl = "/logo.png", siteName = "RYM", navLinks }) {
+  const links = navLinks?.length ? navLinks : NAV_LINKS;
   const navRef = useRef(null);
   const logoRef = useRef(null);
   const linksRef = useRef([]);
@@ -86,8 +88,8 @@ export default function Navbar() {
           className="flex items-center gap-3 font-display-lg text-headline-sm font-extrabold tracking-tighter text-primary dark:text-primary-fixed hover:opacity-80 transition-opacity"
         >
           <Image
-            src="/images/brand/rym-logo.png"
-            alt="RYM Logo"
+            src={logoUrl}
+            alt={siteName}
             width={40}
             height={40}
             className="h-10 w-10 object-contain drop-shadow-sm"
@@ -100,7 +102,7 @@ export default function Navbar() {
 
         {/* Navigation Links (Desktop) */}
         <nav className="hidden md:flex items-center gap-8 font-display-lg text-label-lg">
-          {NAV_LINKS.map((link, i) => (
+          {links.map((link, i) => (
             <Link
               key={link.label}
               href={link.href}
@@ -127,7 +129,7 @@ export default function Navbar() {
 
         {/* Mobile menu (toggle + drawer) */}
         <div ref={mobileNavRef} className="md:hidden">
-          <MobileNav links={NAV_LINKS} />
+          <MobileNav links={links} />
         </div>
       </div>
     </header>

@@ -92,7 +92,7 @@ export default function SplashScreen() {
       <div className="flex flex-col items-center justify-center">
         <div ref={logoRef} className="mb-4">
           <Image
-            src="/images/brand/rym-logo.png"
+            src="/logo.png"
             alt="RYM Logo"
             width={120}
             height={120}

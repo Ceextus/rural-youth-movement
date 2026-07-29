@@ -12,7 +12,25 @@
       "Bash(curl -s -X POST http://localhost:3000/api/members -H 'Content-Type: application/json' -d '{\"firstName\":\"Test\",\"lastName\":\"User\",\"email\":\"test@example.com\",\"phone\":\"08000000000\",\"state\":\"Lagos\",\"lga\":\"Ikeja\",\"ward\":\"Test Ward\",\"interests\":[\"Digital Skills\"],\"vision\":\"Backend wiring test\"}' -w '\\\\nHTTP %{http_code}\\\\n')",
       "Bash(curl -s -X POST http://localhost:3000/api/members -H 'Content-Type: application/json' -d '{\"firstName\":\"Ada\",\"lastName\":\"Okoro\",\"email\":\"ada.test@example.com\",\"phone\":\"08031234567\",\"state\":\"Enugu\",\"lga\":\"Nsukka\",\"ward\":\"University Ward\",\"interests\":[\"Rural Education\",\"Digital Skills\"],\"vision\":\"End-to-end backend test\"}' -w '\\\\nHTTP %{http_code}\\\\n')",
       "Bash(curl -s -X POST http://localhost:3000/api/contact -H 'Content-Type: application/json' -d '{\"name\":\"Ada Okoro\",\"email\":\"ada.test@example.com\",\"message\":\"Testing the contact pipeline.\"}' -w '\\\\nHTTP %{http_code}\\\\n')",
-      "Bash(node --env-file=.env.local -e ' *)"
+      "Bash(node --env-file=.env.local -e ' *)",
+      "Bash(cd /c/Users/HP/Desktop/rym *)",
+      "Bash(curl -s -o /dev/null -w '   HTTP %{http_code} -> %{redirect_url}\\\\n' __TRACKED_VAR__/admin)",
+      "Bash(curl -s -o /dev/null -w '   HTTP %{http_code}\\\\n' --cookie rym_admin_session=authenticated __TRACKED_VAR__/admin)",
+      "Bash(curl -s -o /dev/null -w '   HTTP %{http_code}\\\\n' --cookie rym_admin_session=authenticated __TRACKED_VAR__/admin/members)",
+      "Bash(curl -s -o /dev/null -w '   HTTP %{http_code}\\\\n' __TRACKED_VAR__/chapters)",
+      "Bash(curl -s -o /dev/null -w '   HTTP %{http_code}\\\\n' __TRACKED_VAR__/chapters/lagos)",
+      "Bash(node -e \"const N=require\\('naija-state-local-government'\\); const s=N.states\\(\\); console.log\\('naija spellings:', JSON.stringify\\(s.filter\\(x=>/nas|federal|abuja|fct/i.test\\(x\\)\\)\\)\\);\")",
+      "Bash(curl -s -o /dev/null -w '%{http_code}' __TRACKED_VAR__/admin/login)",
+      "Bash(curl -s -o /dev/null -w '   HTTP %{http_code} -> %{redirect_url}\\\\n' __TRACKED_VAR__/auth/callback)",
+      "Bash(node --env-file=.env.local \"C:\\\\Users\\\\HP\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\c--Users-HP-Desktop-rym\\\\c1f6b968-153a-45ae-b0b4-0469cc25ee6e\\\\scratchpad\\\\seed_features.mjs\")",
+      "Bash(node --env-file=.env.local ./_seed_tmp.mjs)",
+      "Bash(curl -s -o /dev/null -w '%{http_code}' __TRACKED_VAR__/admin)",
+      "Bash(curl -s -o /dev/null -w 'HTTP %{http_code}, %{size_download}b' __TRACKED_VAR__/logo.png)",
+      "Bash(curl -s -o /dev/null -w 'HTTP %{http_code}, type=%{content_type}, %{size_download}b' '__TRACKED_VAR__/_next/image?url=%2Flogo.png&w=96&q=75')",
+      "Bash(rm -f /tmp/mv.txt /tmp/media_url.txt /tmp/media_err.txt)"
+    ],
+    "additionalDirectories": [
+      "c:\\Users\\HP\\Desktop\\rym"
     ]
   }
 }

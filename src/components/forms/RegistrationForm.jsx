@@ -4,7 +4,34 @@ import { useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { gsap } from "gsap";
 import NaijaStates from "naija-state-local-government";
+import { createClient } from "@/lib/supabase/client";
 import RegistrationStepIndicator from "./RegistrationStepIndicator";
+
+async function compressImage(file, maxDimension = 400, quality = 0.7) {
+  return new Promise((resolve) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = (e) => {
+      const img = new Image();
+      img.src = e.target.result;
+      img.onload = () => {
+        const canvas = document.createElement("canvas");
+        let width = img.width;
+        let height = img.height;
+        if (width > height) {
+          if (width > maxDimension) { height *= maxDimension / width; width = maxDimension; }
+        } else {
+          if (height > maxDimension) { width *= maxDimension / height; height = maxDimension; }
+        }
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext("2d");
+        ctx.drawImage(img, 0, 0, width, height);
+        canvas.toBlob((blob) => resolve(blob), "image/jpeg", quality);
+      };
+    };
+  });
+}
 
 const STEPS = ["Personal Details", "Location", "Interests"];
 
@@ -29,6 +56,8 @@ export default function RegistrationForm() {
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState("");
   const [errors, setErrors] = useState({});
+  const [photoPreview, setPhotoPreview] = useState(null);
+  const [photoFile, setPhotoFile] = useState(null);
   const [form, setForm] = useState({
     firstName: "",
     lastName: "",
@@ -39,6 +68,7 @@ export default function RegistrationForm() {
     ward: "",
     interests: [],
     vision: "",
+    photoUrl: "",
   });
 
   const stepRef = useRef(null);
@@ -107,21 +137,57 @@ export default function RegistrationForm() {
 
   const handleBack = () => animateTo(step - 1);
 
+  const handlePhotoSelect = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (!file.type.startsWith("image/")) {
+      setErrors((prev) => ({ ...prev, photo: "Please select an image file" }));
+      return;
+    }
+    const compressedBlob = await compressImage(file);
+    setPhotoFile(compressedBlob);
+    setPhotoPreview(URL.createObjectURL(compressedBlob));
+    setErrors((prev) => ({ ...prev, photo: undefined }));
+  };
+
   const handleSubmit = async () => {
     setSubmitting(true);
     setSubmitError("");
     try {
+      let finalPhotoUrl = form.photoUrl;
+
+      // Upload photo if selected
+      if (photoFile) {
+        const supabase = createClient();
+        const ext = "jpg";
+        const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${ext}`;
+        const { data: uploadData, error: uploadError } = await supabase.storage
+          .from("member_photos")
+          .upload(fileName, photoFile, { contentType: "image/jpeg" });
+          
+        if (uploadError) {
+          throw new Error("Failed to upload photo. Please try again.");
+        }
+        
+        const { data: { publicUrl } } = supabase.storage
+          .from("member_photos")
+          .getPublicUrl(uploadData.path);
+          
+        finalPhotoUrl = publicUrl;
+      }
+
+      const submissionData = { ...form, photoUrl: finalPhotoUrl };
+
       const res = await fetch("/api/members", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
+        body: JSON.stringify(submissionData),
       });
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
         throw new Error(data.error || "Registration failed. Please try again.");
       }
       const { member } = await res.json();
-      // Hand the new member's details to the success screen.
       if (typeof window !== "undefined" && member) {
         sessionStorage.setItem("rym_member", JSON.stringify(member));
       }
@@ -154,6 +220,39 @@ export default function RegistrationForm() {
         {/* Step 1: Personal Details */}
         {step === 1 && (
           <div className="space-y-6">
+            <div className="flex flex-col items-center sm:items-start sm:flex-row gap-6 pb-2 border-b border-outline-variant/30">
+              <label
+                htmlFor="photo-upload"
+                className="relative shrink-0 w-24 h-24 sm:w-28 sm:h-28 rounded-full border-2 border-dashed border-primary/40 flex flex-col items-center justify-center bg-surface-container-low cursor-pointer hover:bg-surface-container overflow-hidden group transition-colors"
+              >
+                {photoPreview ? (
+                  <img src={photoPreview} alt="Preview" className="w-full h-full object-cover" />
+                ) : (
+                  <>
+                    <span className="material-symbols-outlined text-primary text-[28px] mb-1">add_a_photo</span>
+                    <span className="font-label-md text-[10px] text-on-surface-variant uppercase tracking-wider">Photo</span>
+                  </>
+                )}
+                <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                  <span className="material-symbols-outlined text-white text-[24px]">edit</span>
+                </div>
+                <input
+                  id="photo-upload"
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  onChange={handlePhotoSelect}
+                />
+              </label>
+              <div className="text-center sm:text-left">
+                <h4 className="font-label-lg text-label-lg text-on-background mb-1">ID Card Photo (Optional)</h4>
+                <p className="font-body-sm text-body-sm text-on-surface-variant max-w-sm mb-2">
+                  Upload a clear photo of yourself for your official RYM digital membership card. It will be compressed automatically.
+                </p>
+                {errors.photo && <p className="text-error font-body-sm text-[12px]">{errors.photo}</p>}
+              </div>
+            </div>
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <label className={labelClass} htmlFor="firstName">

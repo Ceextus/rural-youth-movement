@@ -6,30 +6,22 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const VALUES = [
-  {
-    icon: "handshake",
-    title: "Integrity",
-    text: "Transparent, accountable leadership at every level — from the national secretariat to each local chapter.",
-  },
-  {
-    icon: "diversity_3",
-    title: "Community First",
-    text: "Every initiative begins with the people it serves, driven by local voices and grassroots needs.",
-  },
-  {
-    icon: "lightbulb",
-    title: "Innovation",
-    text: "Bringing modern tools, digital skills, and climate-smart techniques to rural communities.",
-  },
-  {
-    icon: "trending_up",
-    title: "Empowerment",
-    text: "Equipping young leaders with the resources and networks to elevate themselves and their communities.",
-  },
-];
+const DEFAULTS = {
+  badge: "What Drives Us",
+  heading: "Our Core Values",
+  subtext:
+    "The principles that guide every chapter, every project, and every young leader in the movement.",
+  items: [
+    { icon: "handshake", title: "Integrity", text: "Transparent, accountable leadership at every level — from the national secretariat to each local chapter." },
+    { icon: "diversity_3", title: "Community First", text: "Every initiative begins with the people it serves, driven by local voices and grassroots needs." },
+    { icon: "lightbulb", title: "Innovation", text: "Bringing modern tools, digital skills, and climate-smart techniques to rural communities." },
+    { icon: "trending_up", title: "Empowerment", text: "Equipping young leaders with the resources and networks to elevate themselves and their communities." },
+  ],
+};
 
-export default function CoreValues() {
+export default function CoreValues({ content }) {
+  const c = { ...DEFAULTS, ...(content || {}) };
+  const VALUES = c.items?.length ? c.items : DEFAULTS.items;
   const sectionRef = useRef(null);
   const headerRef = useRef(null);
   const cardsRef = useRef([]);
@@ -62,14 +54,13 @@ export default function CoreValues() {
       <div className="max-w-container-max mx-auto">
         <div ref={headerRef} className="max-w-2xl mb-12 md:mb-16">
           <span className="bg-primary/10 text-primary font-label-md text-label-md px-4 py-1.5 rounded-full uppercase tracking-widest border border-primary/20">
-            What Drives Us
+            {c.badge}
           </span>
           <h2 className="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface mt-6 mb-4">
-            Our Core Values
+            {c.heading}
           </h2>
           <p className="font-body-lg text-body-lg text-on-surface-variant">
-            The principles that guide every chapter, every project, and every
-            young leader in the movement.
+            {c.subtext}
           </p>
         </div>
 

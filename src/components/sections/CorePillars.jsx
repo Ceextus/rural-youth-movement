@@ -1,14 +1,29 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import Image from "next/image";
-import Link from "next/link";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
-export default function CorePillars() {
+const CONTENT_DEFAULTS = {
+  heading: "Core Pillars",
+  subtext:
+    "Strategic initiatives designed to create sustainable impact across rural communities.",
+};
+
+// Shown only when the admin agenda_pillars table is empty.
+const FALLBACK_PILLARS = [
+  { icon: "school", title: "Education & Literacy", description: "Foundational literacy, digital skills training, and community learning centers to bridge the educational divide in rural areas." },
+  { icon: "agriculture", title: "Sustainable Farming", description: "Better seeds, sustainable farming techniques, and direct-to-market cooperatives modernising rural agriculture." },
+  { icon: "work", title: "Youth Employment", description: "Rural entrepreneurship and vocational pathways tailored to the economic realities of each region." },
+  { icon: "how_to_vote", title: "Civic Engagement", description: "Town halls, leadership workshops, and voter drives that give rural youth an active role in local governance." },
+];
+
+export default function CorePillars({ content, pillars }) {
+  const c = { ...CONTENT_DEFAULTS, ...(content || {}) };
+  const items = pillars?.length ? pillars : FALLBACK_PILLARS;
+
   const sectionRef = useRef(null);
   const headerRef = useRef(null);
   const cardsRef = useRef([]);
@@ -31,7 +46,7 @@ export default function CorePillars() {
     }, sectionRef);
 
     return () => ctx.revert();
-  }, []);
+  }, [items.length]);
 
   return (
     <section
@@ -39,147 +54,39 @@ export default function CorePillars() {
       ref={sectionRef}
       className="py-[80px] px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto scroll-mt-24"
     >
-      <div ref={headerRef} className="mb-12">
+      <div ref={headerRef} className="mb-12 max-w-2xl">
         <h2 className="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-primary mb-4">
-          Core Pillars
+          {c.heading}
         </h2>
-        <p className="font-body-lg text-body-lg text-on-surface-variant max-w-3xl">
-          Strategic initiatives designed to create sustainable impact across
-          rural communities.
+        <p className="font-body-lg text-body-lg text-on-surface-variant">
+          {c.subtext}
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter-mobile md:gap-gutter-desktop">
-        {/* Education (wide) */}
-        <div
-          ref={(el) => (cardsRef.current[0] = el)}
-          className="lg:col-span-2 bg-surface-container-lowest border-t-4 border-primary border-x border-b border-x-outline-variant/30 border-b-outline-variant/30 rounded-xl p-8 hover:shadow-[0px_8px_24px_rgba(15,122,61,0.08)] transition-shadow group"
-        >
-          <div className="flex items-start justify-between mb-6">
-            <div className="w-12 h-12 bg-primary-container/10 rounded-lg flex items-center justify-center">
-              <span className="material-symbols-outlined text-primary text-3xl">
-                school
-              </span>
-            </div>
-            <span className="bg-primary/10 text-primary font-label-md text-label-md px-3 py-1 rounded-full">
-              Priority 01
-            </span>
-          </div>
-          <h3 className="font-headline-sm text-headline-sm text-on-background mb-3 group-hover:text-primary transition-colors">
-            Education &amp; Literacy
-          </h3>
-          <p className="font-body-md text-body-md text-on-surface-variant mb-6">
-            Equipping the next generation with essential skills. We focus on
-            foundational literacy, digital skills training, and establishing
-            community learning centers to bridge the educational divide in rural
-            areas.
-          </p>
-          <div className="grid grid-cols-2 gap-4">
-            <div className="bg-surface-container-low p-4 rounded-lg">
-              <span className="block font-headline-md text-headline-md text-primary mb-1">
-                50+
-              </span>
-              <span className="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">
-                Learning Hubs
-              </span>
-            </div>
-            <div className="bg-surface-container-low p-4 rounded-lg">
-              <span className="block font-headline-md text-headline-md text-primary mb-1">
-                10k
-              </span>
-              <span className="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">
-                Students Reached
-              </span>
-            </div>
-          </div>
-        </div>
-
-        {/* Agriculture */}
-        <div
-          ref={(el) => (cardsRef.current[1] = el)}
-          className="bg-surface-container-lowest border border-outline-variant/30 rounded-xl p-8 hover:shadow-[0px_8px_24px_rgba(15,122,61,0.08)] transition-shadow group flex flex-col"
-        >
-          <div className="w-12 h-12 bg-primary-container/10 rounded-lg flex items-center justify-center mb-6">
-            <span className="material-symbols-outlined text-primary text-3xl">
-              agriculture
-            </span>
-          </div>
-          <h3 className="font-headline-sm text-headline-sm text-on-background mb-3 group-hover:text-primary transition-colors">
-            Sustainable Farming
-          </h3>
-          <p className="font-body-md text-body-md text-on-surface-variant mb-6 flex-grow">
-            Modernizing rural agriculture through access to better seeds,
-            sustainable farming techniques, and direct-to-market cooperatives.
-          </p>
-          <Link
-            href="#"
-            className="inline-flex items-center text-primary font-label-lg text-label-lg group/link"
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-gutter-mobile md:gap-gutter-desktop">
+        {items.map((pillar, i) => (
+          <div
+            key={pillar.id || pillar.title || i}
+            ref={(el) => (cardsRef.current[i] = el)}
+            className="group relative bg-surface-container-lowest border border-outline-variant/30 rounded-xl p-8 hover:shadow-[0px_8px_24px_rgba(15,122,61,0.08)] hover:-translate-y-1 transition-all duration-300 overflow-hidden"
           >
-            Read the Agri-Plan
-            <span className="material-symbols-outlined ml-2 group-hover/link:translate-x-1 transition-transform">
-              arrow_forward
-            </span>
-          </Link>
-        </div>
-
-        {/* Youth Employment */}
-        <div
-          ref={(el) => (cardsRef.current[2] = el)}
-          className="bg-surface-container-lowest border border-outline-variant/30 rounded-xl p-8 hover:shadow-[0px_8px_24px_rgba(15,122,61,0.08)] transition-shadow group"
-        >
-          <div className="w-12 h-12 bg-primary-container/10 rounded-lg flex items-center justify-center mb-6">
-            <span className="material-symbols-outlined text-primary text-3xl">
-              work
-            </span>
-          </div>
-          <h3 className="font-headline-sm text-headline-sm text-on-background mb-3 group-hover:text-primary transition-colors">
-            Youth Employment
-          </h3>
-          <p className="font-body-md text-body-md text-on-surface-variant">
-            Stimulating local economies by fostering rural entrepreneurship and
-            creating pathways to vocational training tailored to regional needs.
-          </p>
-        </div>
-
-        {/* Civic Engagement (wide, dark) */}
-        <div
-          ref={(el) => (cardsRef.current[3] = el)}
-          className="lg:col-span-2 bg-muted-green text-surface-white rounded-xl p-8 relative overflow-hidden group"
-        >
-          <div className="absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-primary-fixed to-transparent" />
-          <div className="relative z-10 flex flex-col md:flex-row gap-8 items-center">
-            <div className="flex-1">
-              <div className="w-12 h-12 bg-surface-white/10 rounded-lg flex items-center justify-center mb-6">
-                <span className="material-symbols-outlined text-primary-fixed text-3xl">
-                  how_to_vote
-                </span>
-              </div>
-              <h3 className="font-headline-sm text-headline-sm text-surface-white mb-3">
-                Civic Engagement
-              </h3>
-              <p className="font-body-md text-body-md text-surface-variant/80 mb-6">
-                Empowering youth to take an active role in local governance. We
-                facilitate town halls, leadership workshops, and voter
-                registration drives to ensure rural voices are heard.
-              </p>
-              <Link
-                href="/get-involved"
-                className="inline-block border-2 border-primary-fixed text-primary-fixed font-display-lg text-label-lg px-6 py-2 rounded-lg hover:bg-primary-fixed hover:text-muted-green transition-colors"
+            <div className="absolute top-0 left-0 w-full h-[4px] bg-primary transform -translate-x-full group-hover:translate-x-0 transition-transform duration-500 ease-out z-10" />
+            <div className="w-12 h-12 bg-primary-container/10 rounded-lg flex items-center justify-center mb-6 group-hover:bg-primary/20 transition-colors duration-300">
+              <span
+                className="material-symbols-outlined text-primary text-3xl"
+                style={{ fontVariationSettings: "'FILL' 1" }}
               >
-                Join the Civic Network
-              </Link>
+                {pillar.icon || "flag"}
+              </span>
             </div>
-            <div className="flex-1 w-full relative h-48 md:h-64 rounded-lg overflow-hidden border border-surface-white/10">
-              <Image
-                src="/images/agenda/civic-townhall.jpg"
-                alt="Young adults engaged in a lively town hall discussion"
-                fill
-                sizes="(max-width: 768px) 100vw, 33vw"
-                className="object-cover mix-blend-luminosity opacity-80 group-hover:opacity-100 transition-opacity"
-              />
-            </div>
+            <h3 className="font-headline-sm text-headline-sm text-on-background mb-3 group-hover:text-primary transition-colors">
+              {pillar.title}
+            </h3>
+            <p className="font-body-md text-body-md text-on-surface-variant">
+              {pillar.description}
+            </p>
           </div>
-        </div>
+        ))}
       </div>
     </section>
   );

@@ -7,12 +7,24 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const STATS = [
-  { value: "36+", label: "State Chapters" },
-  { value: "50k", label: "Active Members" },
-];
+const DEFAULTS = {
+  heading: "Rooted in Renewed Hope",
+  paragraph1:
+    "The Rural Youth Movement (RYM) stands as a vital grassroots pillar aligned with Nigeria's Renewed Hope Agenda. We recognize that true national progress must begin in our agricultural heartlands and rural communities.",
+  paragraph2:
+    "Our mission is to translate high-level policy into tangible, on-the-ground action, ensuring that the youth who form the backbone of our agrarian economy are equipped, empowered, and elevated to leadership roles.",
+  image: "/images/about/farmers-modern-equipment.jpg",
+  badgeTitle: "Impact Driven",
+  badgeText: "Advancing communities through grassroots mobilization.",
+  stats: [
+    { value: "36+", label: "State Chapters" },
+    { value: "50k", label: "Active Members" },
+  ],
+};
 
-export default function OriginAffiliation() {
+export default function OriginAffiliation({ content }) {
+  const c = { ...DEFAULTS, ...(content || {}) };
+  const STATS = c.stats?.length ? c.stats : DEFAULTS.stats;
   const sectionRef = useRef(null);
   const containerRef = useRef(null);
   const imageRef = useRef(null);
@@ -102,8 +114,8 @@ export default function OriginAffiliation() {
             className="relative h-[450px] lg:h-[500px] w-full rounded-2xl border border-muted-green/10 overflow-hidden shadow-lg transition-shadow duration-300 hover:shadow-xl"
           >
             <Image
-              src="/images/about/farmers-modern-equipment.jpg"
-              alt="Young Nigerian farmers operating modern agricultural equipment in a field"
+              src={c.image}
+              alt={c.heading}
               fill
               sizes="(max-width: 768px) 100vw, 50vw"
               className="object-cover"
@@ -121,10 +133,10 @@ export default function OriginAffiliation() {
               <span className="material-symbols-outlined text-primary text-[28px]">
                 verified
               </span>
-              <span className="font-label-lg text-label-md font-bold text-on-background">Impact Driven</span>
+              <span className="font-label-lg text-label-md font-bold text-on-background">{c.badgeTitle}</span>
             </div>
             <p className="text-[12px] text-on-surface-variant leading-relaxed">
-              Advancing communities through grassroots mobilization.
+              {c.badgeText}
             </p>
           </div>
         </div>
@@ -135,25 +147,19 @@ export default function OriginAffiliation() {
             ref={(el) => (itemsRef.current[0] = el)}
             className="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-primary"
           >
-            Rooted in Renewed Hope
+            {c.heading}
           </h2>
           <p
             ref={(el) => (itemsRef.current[1] = el)}
             className="font-body-md text-body-md text-on-surface-variant leading-relaxed"
           >
-            The Rural Youth Movement (RYM) stands as a vital grassroots pillar
-            aligned with Nigeria&apos;s Renewed Hope Agenda. We recognize that
-            true national progress must begin in our agricultural heartlands and
-            rural communities.
+            {c.paragraph1}
           </p>
           <p
             ref={(el) => (itemsRef.current[2] = el)}
             className="font-body-md text-body-md text-on-surface-variant leading-relaxed"
           >
-            Our mission is to translate high-level policy into tangible,
-            on-the-ground action, ensuring that the youth who form the backbone
-            of our agrarian economy are equipped, empowered, and elevated to
-            leadership roles.
+            {c.paragraph2}
           </p>
           
           <div

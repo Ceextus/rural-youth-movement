@@ -6,20 +6,19 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const BLOCKS = [
-  {
-    label: "Our Vision",
-    icon: "visibility",
-    text: "To cultivate a resilient, technologically adept generation of rural leaders who will drive Nigeria's sustainable agricultural transformation.",
-  },
-  {
-    label: "Our Mission",
-    icon: "flag",
-    text: "To mobilize, educate, and resource rural youth, transforming communities through modern farming practices, civic engagement, and cooperative economics.",
-  },
-];
+const DEFAULTS = {
+  visionText:
+    "To cultivate a resilient, technologically adept generation of rural leaders who will drive Nigeria's sustainable agricultural transformation.",
+  missionText:
+    "To mobilize, educate, and resource rural youth, transforming communities through modern farming practices, civic engagement, and cooperative economics.",
+};
 
-export default function VisionMission() {
+export default function VisionMission({ content }) {
+  const c = { ...DEFAULTS, ...(content || {}) };
+  const BLOCKS = [
+    { label: "Our Vision", icon: "visibility", text: c.visionText },
+    { label: "Our Mission", icon: "flag", text: c.missionText },
+  ];
   const sectionRef = useRef(null);
   const cardsRef = useRef([]);
 

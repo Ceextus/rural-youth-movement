@@ -11,4 +11,5 @@ export const memberSchema = z.object({
   ward: z.string().trim().min(1, "Ward / community is required").max(120),
   interests: z.array(z.string()).default([]),
   vision: z.string().trim().max(1000).optional().or(z.literal("")),
+  photoUrl: z.string().url().optional().or(z.literal("")),
 });

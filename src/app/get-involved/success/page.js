@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { gsap } from "gsap";
 import ShareModal from "@/components/forms/ShareModal";
+import MembershipCard from "@/components/cards/MembershipCard";
 
 export default function GetInvolvedSuccessPage() {
   const [shareOpen, setShareOpen] = useState(false);
@@ -73,51 +74,25 @@ export default function GetInvolvedSuccessPage() {
         </div>
 
         {/* Member card */}
-        <div
-          data-reveal
-          className="w-full bg-surface-white border border-muted-green/10 rounded-lg p-6 mb-10 shadow-[0px_4px_12px_rgba(15,122,61,0.05)] relative overflow-hidden text-left"
-        >
-          <div className="absolute top-0 left-0 right-0 h-1 bg-primary" />
-          <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center gap-3">
-              <span
-                className="material-symbols-outlined text-primary text-[24px]"
-                style={{ fontVariationSettings: "'FILL' 1" }}
-              >
-                badge
-              </span>
-              <span className="font-label-lg text-label-lg text-on-surface">
-                Member Status
-              </span>
-            </div>
-            <div className="bg-primary-container/10 px-3 py-1 rounded-full border border-primary-container/20">
-              <span className="font-label-md text-label-md text-primary">
-                Active
-              </span>
-            </div>
-          </div>
-          <div className="space-y-2">
-            <div>
-              <span className="font-label-md text-label-md text-on-surface-variant block mb-1">
-                Membership ID
-              </span>
-              <span className="font-body-md text-body-md text-on-surface font-mono tracking-widest bg-surface-container px-2 py-1 rounded">
-                {membershipId}
-              </span>
-            </div>
-            <div className="pt-2 border-t border-outline-variant/20 mt-4">
-              <span className="font-label-md text-label-md text-on-surface-variant block mb-1">
-                Region
-              </span>
-              <span className="font-body-md text-body-md text-on-surface">
-                {region}
-              </span>
-            </div>
-          </div>
+        <div data-reveal className="w-full mb-10">
+          <MembershipCard member={member} />
         </div>
 
         {/* Actions */}
         <div data-reveal className="w-full space-y-4">
+          <button
+            type="button"
+            onClick={() => {
+              const url = `${window.location.origin}/verify/${member?.id}`;
+              navigator.clipboard.writeText(url);
+              alert("Verification link copied to clipboard!");
+            }}
+            className="w-full bg-surface-white border-2 border-primary text-primary font-display-lg text-label-lg py-4 px-6 rounded-lg hover:bg-primary/5 transition-colors duration-200 flex items-center justify-center gap-2"
+          >
+            <span className="material-symbols-outlined text-[20px]">content_copy</span>
+            <span>Copy Verification Link</span>
+          </button>
+          
           <Link
             href="/"
             className="w-full bg-primary text-surface-white font-display-lg text-label-lg py-4 px-6 rounded-lg hover:-translate-y-[2px] hover:shadow-[0px_8px_16px_rgba(15,122,61,0.2)] transition-all duration-200 flex items-center justify-center gap-2"

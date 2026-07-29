@@ -19,7 +19,11 @@ const CHAPTERS = [
   "Sokoto",
 ];
 
-export default function ContactSection() {
+export default function ContactSection({
+  email = "hello@rymovement.org",
+  phone,
+  address = "Plot 100, Grassroots Avenue\nCentral Business District\nAbuja, FCT, Nigeria",
+}) {
   const [open, setOpen] = useState(false);
   const sectionRef = useRef(null);
   const colsRef = useRef([]);
@@ -96,9 +100,17 @@ export default function ContactSection() {
                   <h4 className="font-label-lg text-label-lg text-on-surface mb-1 group-hover:text-primary transition-colors duration-300">
                     General Inquiries
                   </h4>
-                  <p className="font-body-md text-body-md text-primary mb-2">
-                    hello@rymovement.org
-                  </p>
+                  <a
+                    href={`mailto:${email}`}
+                    className="font-body-md text-body-md text-primary mb-2 block hover:underline"
+                  >
+                    {email}
+                  </a>
+                  {phone && (
+                    <p className="font-body-sm text-body-sm text-on-surface-variant mb-1">
+                      {phone}
+                    </p>
+                  )}
                   <p className="font-body-sm text-body-sm text-on-surface-variant opacity-90 group-hover:opacity-100 transition-opacity">
                     For press, partnerships, and general questions.
                   </p>
@@ -120,12 +132,8 @@ export default function ContactSection() {
                   <h4 className="font-label-lg text-label-lg text-on-surface mb-1 group-hover:text-primary transition-colors duration-300">
                     National Headquarters
                   </h4>
-                  <p className="font-body-md text-body-md text-on-surface-variant opacity-90 group-hover:opacity-100 transition-opacity">
-                    Plot 100, Grassroots Avenue
-                    <br />
-                    Central Business District
-                    <br />
-                    Abuja, FCT, Nigeria
+                  <p className="font-body-md text-body-md text-on-surface-variant opacity-90 group-hover:opacity-100 transition-opacity whitespace-pre-line">
+                    {address}
                   </p>
                 </div>
               </div>
@@ -162,7 +170,7 @@ export default function ContactSection() {
                     {CHAPTERS.map((state) => (
                       <Link
                         key={state}
-                        href="#"
+                        href={`/chapters/${state.toLowerCase()}`}
                         className="font-body-sm text-body-sm text-primary hover:text-primary-container transition-colors flex items-center gap-1 group/link"
                       >
                         <span className="w-1 h-1 rounded-full bg-primary/30 group-hover/link:bg-primary transition-colors" />
@@ -171,7 +179,7 @@ export default function ContactSection() {
                     ))}
                   </div>
                   <Link
-                    href="#"
+                    href="/chapters"
                     className="group/btn inline-flex items-center gap-2 mt-6 text-center font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors"
                   >
                     <span>View all chapters</span>

@@ -10,7 +10,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 const FILTERS = ["All Updates", "National", "State", "Community"];
 
-const SIDEBAR = [
+const FALLBACK_SIDEBAR = [
   {
     category: "State Chapters",
     title: "Midwest Coalition Secures Regional Grant for Sustainable Practices",
@@ -23,10 +23,22 @@ const SIDEBAR = [
   },
 ];
 
-export default function NewsFeed() {
+export default function NewsFeed({ posts }) {
   const [active, setActive] = useState("All Updates");
   const sectionRef = useRef(null);
   const itemsRef = useRef([]);
+
+  // Map DB sidebar posts or use fallback
+  const SIDEBAR = posts?.length > 1
+    ? posts.slice(1, 3).map((p) => ({
+        category: p.tag || "General",
+        title: p.title,
+        slug: p.slug,
+        date: new Date(p.published_at || p.created_at).toLocaleDateString("en-NG", { month: "short", day: "numeric", year: "numeric" }).toUpperCase(),
+      }))
+    : FALLBACK_SIDEBAR;
+
+  const featuredPost = posts?.[0] || null;
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -80,32 +92,31 @@ export default function NewsFeed() {
           {/* Animated top border */}
           <div className="absolute top-0 left-0 w-full h-[4px] bg-primary transform -translate-x-full group-hover:translate-x-0 transition-transform duration-500 ease-out z-20" />
 
-          <Link href="/news">
+          <Link href={featuredPost ? `/news/${featuredPost.slug}` : "/news"}>
             <div className="aspect-video w-full bg-surface-dim relative overflow-hidden">
               <Image
-                src="/images/news/featured-innovation-fund.jpg"
-                alt="A large, energetic gathering of young agricultural leaders in a modern community hall"
+                src={featuredPost?.cover_image || "/images/news/featured-innovation-fund.jpg"}
+                alt={featuredPost?.title || "Featured news article"}
                 fill
                 sizes="(max-width: 768px) 100vw, 66vw"
                 className="object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
               />
               <div className="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 mix-blend-multiply pointer-events-none" />
               <div className="absolute top-4 left-4 bg-primary/90 backdrop-blur-md text-surface-white px-3 py-1.5 rounded-lg font-label-md text-label-md shadow-md">
-                National
+                {featuredPost?.tag || "National"}
               </div>
             </div>
             <div className="p-6 md:p-8 flex flex-col relative z-10">
               <div className="text-on-surface-variant font-label-md text-label-md mb-2">
-                OCTOBER 24, 2024
+                {featuredPost
+                  ? new Date(featuredPost.published_at || featuredPost.created_at).toLocaleDateString("en-NG", { month: "long", day: "numeric", year: "numeric" }).toUpperCase()
+                  : "OCTOBER 24, 2024"}
               </div>
               <h2 className="font-headline-sm md:text-[28px] md:leading-[36px] text-on-background mb-4 group-hover:text-primary transition-colors duration-300">
-                National Secretariat Announces New Agricultural Innovation Fund
-                for Young Farmers
+                {featuredPost?.title || "National Secretariat Announces New Agricultural Innovation Fund for Young Farmers"}
               </h2>
               <p className="font-body-md text-body-md text-on-surface-variant opacity-90 group-hover:opacity-100 transition-opacity duration-300">
-                The newly established fund aims to provide essential seed
-                capital and modern equipment to grassroots agricultural
-                initiatives led by members under 35...
+                {featuredPost?.excerpt || "The newly established fund aims to provide essential seed capital and modern equipment to grassroots agricultural initiatives led by members under 35..."}
               </p>
               
               <div className="mt-6 flex items-center gap-2 text-primary font-label-md text-label-md group/btn">
@@ -134,7 +145,7 @@ export default function NewsFeed() {
               {/* Animated left border for sidebar items */}
               <div className="absolute top-0 left-0 w-[4px] h-full bg-primary transform -translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-out z-20" />
 
-              <Link href="/news" className="flex flex-col h-full relative z-10">
+              <Link href={article.slug ? `/news/${article.slug}` : "/news"} className="flex flex-col h-full relative z-10">
                 <div className="text-primary font-label-md text-label-md mb-3 group-hover:bg-primary/10 w-fit px-2 py-0.5 rounded transition-colors duration-300">
                   {article.category}
                 </div>

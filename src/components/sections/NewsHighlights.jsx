@@ -8,7 +8,7 @@ import NewsCard from "../cards/NewsCard";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const NEWS = [
+const FALLBACK_NEWS = [
   {
     image: "/images/news/kano-agritech.jpg",
     alt: "Young volunteers distributing agricultural tools in a sunlit field",
@@ -38,10 +38,23 @@ const NEWS = [
   },
 ];
 
-export default function NewsHighlights() {
+export default function NewsHighlights({ posts }) {
   const sectionRef = useRef(null);
   const headerRef = useRef(null);
   const cardsRef = useRef([]);
+
+  // Map DB posts to card format, or fall back to hardcoded data
+  const NEWS = posts?.length
+    ? posts.map((p) => ({
+        image: p.cover_image || "/images/news/kano-agritech.jpg",
+        alt: p.title,
+        tag: p.tag || "General",
+        date: new Date(p.published_at || p.created_at).toLocaleDateString("en-NG", { month: "short", day: "numeric", year: "numeric" }),
+        title: p.title,
+        excerpt: p.excerpt || "",
+        href: `/news/${p.slug}`,
+      }))
+    : FALLBACK_NEWS;
 
   useEffect(() => {
     const ctx = gsap.context(() => {

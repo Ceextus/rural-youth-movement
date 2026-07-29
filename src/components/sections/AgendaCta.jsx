@@ -7,7 +7,17 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
-export default function AgendaCta() {
+const DEFAULTS = {
+  headingLead: "Ready to",
+  headingHighlight: "Act?",
+  subtext:
+    "The agenda is set, but the real work happens in the community. Join thousands of young leaders transforming rural Nigeria today.",
+  buttonLabel: "Be the Change in Your Community",
+  buttonHref: "/get-involved",
+};
+
+export default function AgendaCta({ content }) {
+  const c = { ...DEFAULTS, ...(content || {}) };
   const sectionRef = useRef(null);
   const itemsRef = useRef([]);
 
@@ -37,21 +47,20 @@ export default function AgendaCta() {
         ref={(el) => (itemsRef.current[0] = el)}
         className="font-display-lg text-headline-lg-mobile md:text-display-lg text-on-background mb-6"
       >
-        Ready to <span className="text-primary">Act?</span>
+        {c.headingLead} <span className="text-primary">{c.headingHighlight}</span>
       </h2>
       <p
         ref={(el) => (itemsRef.current[1] = el)}
         className="font-body-lg text-body-lg text-on-surface-variant mb-10 max-w-2xl mx-auto"
       >
-        The agenda is set, but the real work happens in the community. Join
-        thousands of young leaders transforming rural Nigeria today.
+        {c.subtext}
       </p>
       <div ref={(el) => (itemsRef.current[2] = el)}>
         <Link
-          href="/get-involved"
+          href={c.buttonHref}
           className="inline-block bg-primary text-on-primary font-display-lg text-label-lg px-10 py-5 rounded-lg hover:-translate-y-1 transition-transform shadow-[0px_8px_24px_rgba(15,122,61,0.2)] text-lg"
         >
-          Be the Change in Your Community
+          {c.buttonLabel}
         </Link>
       </div>
     </section>

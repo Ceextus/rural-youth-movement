@@ -7,7 +7,15 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
-export default function ReachMap() {
+const DEFAULTS = {
+  headingLine1: "National Footprint,",
+  headingLine2: "Local Impact",
+  body: "The Rural Youth Movement is active across all 36 states of Nigeria. Our decentralized chapter model ensures that initiatives are tailored to the specific agricultural and economic realities of each region, while remaining united under a single agenda for rural prosperity.",
+  image: "/images/agenda/nigeria-map.jpg",
+};
+
+export default function ReachMap({ content }) {
+  const c = { ...DEFAULTS, ...(content || {}) };
   const sectionRef = useRef(null);
   const textRef = useRef([]);
   const mapRef = useRef(null);
@@ -45,19 +53,15 @@ export default function ReachMap() {
               ref={(el) => (textRef.current[0] = el)}
               className="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-primary mb-6"
             >
-              National Footprint,
+              {c.headingLine1}
               <br />
-              <span className="text-on-background">Local Impact</span>
+              <span className="text-on-background">{c.headingLine2}</span>
             </h2>
             <p
               ref={(el) => (textRef.current[1] = el)}
               className="font-body-lg text-body-lg text-on-surface-variant mb-8"
             >
-              The Rural Youth Movement is active across all 36 states of
-              Nigeria. Our decentralized chapter model ensures that initiatives
-              are tailored to the specific agricultural and economic realities
-              of each region, while remaining united under a single agenda for
-              rural prosperity.
+              {c.body}
             </p>
             <div
               ref={(el) => (textRef.current[2] = el)}
@@ -84,7 +88,7 @@ export default function ReachMap() {
             className="relative h-[400px] w-full rounded-xl bg-surface-white border border-outline-variant/30 shadow-sm flex items-center justify-center p-8"
           >
             <Image
-              src="/images/agenda/nigeria-map.jpg"
+              src={c.image}
               alt="Map of Nigeria highlighting active RYM state chapters"
               fill
               sizes="(max-width: 1024px) 100vw, 50vw"

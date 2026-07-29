@@ -3,7 +3,16 @@
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 
-export default function AboutHero() {
+const DEFAULTS = {
+  badge: "About Us",
+  headingLead: "The Movement for the",
+  headingHighlight: "Future",
+  subtext:
+    "A modern grassroots initiative empowering rural youth across Nigeria. We are building a foundation of leadership, agricultural innovation, and community resilience.",
+};
+
+export default function AboutHero({ content }) {
+  const c = { ...DEFAULTS, ...(content || {}) };
   const sectionRef = useRef(null);
   const itemsRef = useRef([]);
   const patternRef = useRef(null);
@@ -55,29 +64,28 @@ export default function AboutHero() {
             ref={(el) => (itemsRef.current[0] = el)}
             className="bg-primary/10 text-primary font-label-md text-label-md px-4 py-1.5 rounded-full w-fit uppercase tracking-widest border border-primary/20 shadow-[0_0_15px_rgba(15,122,61,0.15)] relative overflow-hidden group"
           >
-            <span className="relative z-10">About Us</span>
+            <span className="relative z-10">{c.badge}</span>
             <div className="absolute inset-0 bg-primary/20 transform -translate-x-full group-hover:translate-x-0 transition-transform duration-500 ease-out z-0" />
           </span>
-          
+
           <h1
             ref={(el) => (itemsRef.current[1] = el)}
             className="font-display-lg text-headline-lg-mobile md:text-display-lg text-on-surface"
           >
-            The Movement for the <span className="text-primary relative inline-block">
-              Future
+            {c.headingLead}{" "}
+            <span className="text-primary relative inline-block">
+              {c.headingHighlight}
               <svg className="absolute w-full h-3 -bottom-1 left-0 text-primary/30" viewBox="0 0 100 10" preserveAspectRatio="none">
                 <path d="M0 5 Q 50 10 100 5" stroke="currentColor" strokeWidth="4" fill="transparent" />
               </svg>
             </span>
           </h1>
-          
+
           <p
             ref={(el) => (itemsRef.current[2] = el)}
             className="font-body-lg text-body-lg text-on-surface-variant max-w-2xl leading-relaxed"
           >
-            A modern grassroots initiative empowering rural youth across
-            Nigeria. We are building a foundation of leadership, agricultural
-            innovation, and community resilience.
+            {c.subtext}
           </p>
         </div>
       </div>
