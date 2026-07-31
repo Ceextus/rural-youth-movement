@@ -27,7 +27,11 @@
       "Bash(curl -s -o /dev/null -w '%{http_code}' __TRACKED_VAR__/admin)",
       "Bash(curl -s -o /dev/null -w 'HTTP %{http_code}, %{size_download}b' __TRACKED_VAR__/logo.png)",
       "Bash(curl -s -o /dev/null -w 'HTTP %{http_code}, type=%{content_type}, %{size_download}b' '__TRACKED_VAR__/_next/image?url=%2Flogo.png&w=96&q=75')",
-      "Bash(rm -f /tmp/mv.txt /tmp/media_url.txt /tmp/media_err.txt)"
+      "Bash(rm -f /tmp/mv.txt /tmp/media_url.txt /tmp/media_err.txt)",
+      "Bash(curl -s -o /dev/null -w 'HTTP %{http_code}, %{content_type}, %{size_download}b' __TRACKED_VAR__/api/qr?data=https://rym.ng/verify/abc)",
+      "Bash(curl -s -o /dev/null -w '%{http_code}' __TRACKED_VAR__/get-involved/success)",
+      "Bash(curl -s -o /dev/null -w \"home HTTP %{http_code}\\\\n\" http://localhost:3000/)",
+      "Bash(curl -s -o /dev/null -w \"qr HTTP %{http_code}\\\\n\" \"http://localhost:3000/api/qr?data=test\")"
     ],
     "additionalDirectories": [
       "c:\\Users\\HP\\Desktop\\rym"

@@ -44,7 +44,7 @@ export async function POST(request) {
         photo_url: d.photoUrl || null,
         member_code: memberCode,
       })
-      .select("id, status, state, member_code, photo_url")
+      .select("id, first_name, last_name, phone, state, lga, status, member_code, photo_url")
       .single();
 
     if (error) throw error;

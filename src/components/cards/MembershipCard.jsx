@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-export default function MembershipCard({ member, baseUrl = "https://rym.org.ng" }) {
+export default function MembershipCard({ member, baseUrl = "https://ruralyouthmovement.netlify.app" }) {
   if (!member) return null;
 
   const status = member.status || "pending";
@@ -18,16 +18,16 @@ export default function MembershipCard({ member, baseUrl = "https://rym.org.ng" 
   
   // QR Code URL (pointing to the verification page)
   const verifyUrl = `${baseUrl}/verify/${member.id}`;
-  const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(verifyUrl)}&color=005f2c&bgcolor=ffffff`;
+  const qrCodeUrl = `/api/qr?data=${encodeURIComponent(verifyUrl)}`;
 
   return (
     <div className="w-full max-w-sm mx-auto bg-surface-white rounded-xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] overflow-hidden border border-outline-variant/30 relative font-sans">
       {/* Header Banner */}
       <div className="h-14 bg-primary flex items-center px-4 relative overflow-hidden">
         <div className="absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_top_right,_var(--color-primary-container),_transparent_70%)]" />
-        <span className="material-symbols-outlined text-surface-white mr-2" style={{ fontVariationSettings: "'FILL' 1" }}>
-          admin_panel_settings
-        </span>
+        <svg viewBox="0 0 24 24" className="w-5 h-5 mr-2 fill-surface-white shrink-0" aria-hidden="true">
+          <path d="M12 1 3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-1.2 15L7 12.2l1.4-1.4 2.4 2.4 4.8-4.8L17 9.8 10.8 16z" />
+        </svg>
         <h3 className="font-headline-sm text-surface-white text-[16px] tracking-wide">
           RYM OFFICIAL MEMBER
         </h3>
@@ -47,7 +47,9 @@ export default function MembershipCard({ member, baseUrl = "https://rym.org.ng" 
               />
             ) : (
               <div className="w-full h-full flex items-center justify-center bg-surface-container text-on-surface-variant/40">
-                <span className="material-symbols-outlined text-[40px]">person</span>
+                <svg viewBox="0 0 24 24" className="w-10 h-10 fill-current" aria-hidden="true">
+                  <path d="M12 12a5 5 0 1 0 0-10 5 5 0 0 0 0 10zm0 2c-4.42 0-8 2.24-8 5v3h16v-3c0-2.76-3.58-5-8-5z" />
+                </svg>
               </div>
             )}
           </div>

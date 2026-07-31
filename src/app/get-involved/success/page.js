@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { gsap } from "gsap";
 import ShareModal from "@/components/forms/ShareModal";
-import MembershipCard from "@/components/cards/MembershipCard";
+import MemberIdCardDownload from "@/components/cards/MemberIdCardDownload";
 
 export default function GetInvolvedSuccessPage() {
   const [shareOpen, setShareOpen] = useState(false);
@@ -73,10 +73,19 @@ export default function GetInvolvedSuccessPage() {
           </p>
         </div>
 
-        {/* Member card */}
-        <div data-reveal className="w-full mb-10">
-          <MembershipCard member={member} />
-        </div>
+        {/* Member card + download */}
+        {member && (
+          <div data-reveal className="w-full mb-10">
+            <MemberIdCardDownload
+              member={member}
+              baseUrl={
+                typeof window !== "undefined"
+                  ? window.location.origin
+                  : undefined
+              }
+            />
+          </div>
+        )}
 
         {/* Actions */}
         <div data-reveal className="w-full space-y-4">
